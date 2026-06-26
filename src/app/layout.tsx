@@ -29,9 +29,19 @@ const condensed = Roboto_Condensed({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://dmaquette1.terangadev.com"),
   title: "The Dieng Group — Cross-border advisory, from Indianapolis to West Africa",
   description:
     "The Dieng Group brings organizations in developing markets closer to the people and partners they trade with — advisory, importing and exporting across Senegal, The Gambia and beyond.",
+  openGraph: {
+    title: "The Dieng Group",
+    description:
+      "Cross-border advisory, importing and exporting — from Indianapolis to West Africa.",
+    siteName: "The Dieng Group",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: { card: "summary_large_image", title: "The Dieng Group" },
 };
 
 export default function RootLayout({
