@@ -61,8 +61,15 @@ const en = {
     { label: "Services", href: "/services" },
     { label: "Impact", href: "/impact" },
     { label: "Team", href: "/team" },
+    { label: "Podcast", href: "/podcast" },
     { label: "Dispatch", href: "/dispatch" },
     { label: "Contact", href: "/contact" },
+  ],
+  navGroups: [
+    { label: "About", href: "", items: [ { label: "Overview", href: "/about" }, { label: "Team", href: "/team" } ] },
+    { label: "Services", href: "/services", items: [] as { label: string; href: string }[] },
+    { label: "Newsroom", href: "", items: [ { label: "Impact", href: "/impact" }, { label: "Podcast", href: "/podcast" }, { label: "Dispatch", href: "/dispatch" } ] },
+    { label: "Contact", href: "/contact", items: [] as { label: string; href: string }[] },
   ],
   hero: {
     kicker: "Dispatch No. 01 · Meridian Park, Indianapolis",
@@ -272,8 +279,15 @@ const fr: typeof en = {
     { label: "Services", href: "/services" },
     { label: "Impact", href: "/impact" },
     { label: "Équipe", href: "/team" },
+    { label: "Podcast", href: "/podcast" },
     { label: "Dispatch", href: "/dispatch" },
     { label: "Contact", href: "/contact" },
+  ],
+  navGroups: [
+    { label: "À propos", href: "", items: [ { label: "Présentation", href: "/about" }, { label: "Équipe", href: "/team" } ] },
+    { label: "Services", href: "/services", items: [] as { label: string; href: string }[] },
+    { label: "Actualités", href: "", items: [ { label: "Impact", href: "/impact" }, { label: "Podcast", href: "/podcast" }, { label: "Dispatch", href: "/dispatch" } ] },
+    { label: "Contact", href: "/contact", items: [] as { label: string; href: string }[] },
   ],
   hero: {
     kicker: "Dispatch n° 01 · Meridian Park, Indianapolis",

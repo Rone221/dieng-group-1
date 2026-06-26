@@ -27,18 +27,53 @@ export default function Header() {
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
-          {c.nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={isActive(item.href) ? "page" : undefined}
-              className={`font-condensed text-[0.8rem] font-semibold uppercase tracking-[0.14em] link-underline ${
-                isActive(item.href) ? "text-ink" : "text-ink/65 hover:text-ink"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {c.navGroups.map((g) => {
+            const groupActive = g.href
+              ? isActive(g.href)
+              : g.items.some((it) => isActive(it.href));
+            const base = "font-condensed text-[0.8rem] font-semibold uppercase tracking-[0.14em]";
+            if (g.items.length === 0) {
+              return (
+                <Link
+                  key={g.label}
+                  href={g.href}
+                  aria-current={groupActive ? "page" : undefined}
+                  className={`${base} link-underline ${groupActive ? "text-ink" : "text-ink/65 hover:text-ink"}`}
+                >
+                  {g.label}
+                </Link>
+              );
+            }
+            return (
+              <div key={g.label} className="group/nav relative">
+                <button
+                  type="button"
+                  aria-haspopup="true"
+                  className={`${base} flex items-center gap-1 ${groupActive ? "text-ink" : "text-ink/65 hover:text-ink"}`}
+                >
+                  {g.label}
+                  <span className="text-[0.6rem] text-ink/40 transition-transform group-hover/nav:rotate-180">▾</span>
+                </button>
+                <div className="invisible absolute left-1/2 top-full z-40 -translate-x-1/2 pt-3 opacity-0 transition-all duration-150 group-hover/nav:visible group-hover/nav:opacity-100 group-focus-within/nav:visible group-focus-within/nav:opacity-100">
+                  <ul className="min-w-44 border border-ink/12 bg-cream py-1.5 shadow-xl">
+                    {g.items.map((it) => (
+                      <li key={it.href}>
+                        <Link
+                          href={it.href}
+                          aria-current={isActive(it.href) ? "page" : undefined}
+                          className={`block px-4 py-2 font-condensed text-[0.78rem] font-semibold uppercase tracking-[0.12em] ${
+                            isActive(it.href) ? "text-accent" : "text-ink/70 hover:bg-sand/60 hover:text-ink"
+                          }`}
+                        >
+                          {it.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-2">
