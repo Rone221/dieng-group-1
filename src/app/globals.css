@@ -1,26 +1,237 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Fixed: light text that sits on dark/coloured surfaces (never themed) */
+  --color-on-dark: #f7f3ec;
+  /* Accent text — flips lighter in dark mode (see .dark below) */
+  --color-accent: #c2410c;
+
+  /* Paper & ink */
+  --color-cream: #faf6f0;
+  --color-sand: #f1e7d8;
+  --color-sand-deep: #e7d8c2;
+  --color-ink: #241f1c;
+
+  /* Structure + audience lanes */
+  --color-navy: #1f3a5f;   /* structural ink + Private/Corporate lane */
+  --color-teal: #2e8b7f;   /* NGO lane */
+  --color-amber: #e0922f;  /* Government lane */
+
+  /* Action + spark (rationed) — bright for fills/accents only */
+  --color-orange: #f26b2a;
+  --color-orange-dark: #e2561a;
+  --color-gold: #efa82e;
+
+  /* AA text-grade variants — use for SMALL TEXT and button fills on cream/sand */
+  --color-orange-ink: #c2410c; /* cream-on / on-cream ~5:1 */
+  --color-teal-ink: #1f6b60;
+  --color-amber-ink: #9a5d12;
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-franklin), ui-sans-serif, system-ui, sans-serif;
+  --font-condensed: var(--font-condensed-rc), "Arial Narrow", sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf6f0;
+  --foreground: #241f1c;
+  --rail-w: 76px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark mode — flip the warm neutrals; navy/teal/amber/gold stay as accents */
+.dark {
+  --color-cream: #16120e;
+  --color-sand: #1e1813;
+  --color-sand-deep: #261f17;
+  --color-ink: #efe6da;
+  --color-accent: #f0915f;
+  --background: #16120e;
+  --foreground: #efe6da;
+}
+.dark body { background: var(--color-cream); color: var(--color-ink); }
+
+html {
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Anchor jumps clear the sticky masthead */
+section[id],
+[id="top"] {
+  scroll-margin-top: 4.5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-orange) 28%, transparent);
+}
+
+/* ---------- Editorial furniture ---------- */
+.font-display { font-family: var(--font-display); }
+.font-condensed { font-family: var(--font-condensed); }
+
+.kicker {
+  font-family: var(--font-condensed);
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  color: var(--color-navy);
+}
+
+.standfirst {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--color-ink) 88%, transparent);
+}
+
+.display-h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+
+.display-h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.numeral {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 0.8;
+  font-size: clamp(3rem, 10vw, 7rem);
+}
+
+.measure { max-width: 64ch; }
+
+/* Hairline broadsheet rules */
+.hairline { border-color: color-mix(in srgb, var(--color-ink) 12%, transparent); }
+.rule-t { border-top: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent); }
+.rule-b { border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent); }
+
+/* The single gold trade-line thread */
+.trade-line {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold) 18%,
+    var(--color-gold) 82%,
+    transparent
+  );
+  opacity: 0.85;
+}
+
+/* ---------- Film grain (printed-dispatch feel) ---------- */
+.grain { position: relative; }
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* ---------- Duotone (applied via SVG filters in DuotoneDefs) ---------- */
+.duo-navy { filter: url(#duo-navy); }
+.duo-teal { filter: url(#duo-teal); }
+.duo-amber { filter: url(#duo-amber); }
+.duo-ink  { filter: url(#duo-ink); }
+
+.detone { transition: filter 0.5s ease; }
+.group:hover .detone { filter: none; }
+
+/* ---------- Editorial form controls ---------- */
+.field-label {
+  font-family: var(--font-condensed);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--color-ink) 62%, transparent);
+}
+.field-input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--color-ink) 45%, transparent);
+  padding: 0.55rem 0.1rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--color-ink);
+  border-radius: 0;
+}
+.field-input::placeholder { color: color-mix(in srgb, var(--color-ink) 55%, transparent); }
+.field-input:focus {
+  outline: none;
+  border-bottom-width: 2px;
+  border-bottom-color: var(--color-ink);
+  box-shadow: 0 2px 0 0 var(--color-navy);
+}
+select.field-input {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 1.6rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23241f1c' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.1rem center;
+}
+
+/* Visible keyboard focus (WCAG 2.4.7) */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+/* On dark surfaces, use the gold ring */
+.on-dark :where(a, button, input, select, textarea):focus-visible {
+  outline-color: var(--color-gold);
+}
+
+/* Animated link underline */
+.link-underline {
+  background-image: linear-gradient(var(--color-orange), var(--color-orange));
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1.5px;
+  transition: background-size 0.3s ease;
+}
+.link-underline:hover { background-size: 100% 1.5px; }
+
+/* Route-line dash drift */
+@keyframes dash-drift {
+  to { stroke-dashoffset: -1000; }
+}
+.route-dash {
+  stroke-dasharray: 2 8;
+  animation: dash-drift 40s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .route-dash { animation: none; }
+  .detone { transition: none; }
 }

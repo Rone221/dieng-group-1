@@ -1,65 +1,71 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import { useContent } from "@/lib/i18n";
+import Hero from "@/components/sections/Hero";
+import PlaceProof from "@/components/sections/PlaceProof";
+import Plate from "@/components/Plate";
+import { Shell, Kicker, Standfirst } from "@/components/primitives";
 
 export default function Home() {
+  const c = useContent();
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      <Hero />
+      <PlaceProof />
+
+      <section className="py-20 md:py-28">
+        <Shell>
+          <Kicker>{c.ui.inThisIssue}</Kicker>
+          <Standfirst className="mt-4 max-w-2xl">{c.ui.inThisIssueLead}</Standfirst>
+
+          <ul className="mt-12">
+            {c.homeIssue.map((it) => (
+              <li key={it.href}>
+                <Link
+                  href={it.href}
+                  className="group grid grid-cols-[auto_1fr_auto] items-center gap-5 rule-t py-7 transition-colors hover:bg-sand/50"
+                >
+                  <span className="numeral text-3xl text-ink/15 transition-colors group-hover:text-accent">
+                    {it.n}
+                  </span>
+                  <div>
+                    <h2 className="font-display text-2xl font-semibold text-ink md:text-3xl">{it.label}</h2>
+                    <p className="mt-1 text-[0.95rem] text-ink/60">{it.line}</p>
+                  </div>
+                  <span className="font-condensed text-sm text-ink/40 transition-transform group-hover:translate-x-1 group-hover:text-accent">
+                    →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Shell>
+      </section>
+
+      <Plate
+        src="/images/community-joal.jpg"
+        alt="Senegalese women at work in Joal-Fadiouth"
+        caption={`${c.route[3].place} · ${c.route[3].note}`}
+        sizes="100vw"
+        className="h-[40vh] w-full md:h-[52vh]"
+      />
+
+      <section className="py-20 md:py-24">
+        <Shell>
+          <div className="grid items-center gap-8 md:grid-cols-12">
+            <h2 className="display-h2 md:col-span-8">{c.ui.closingTitle}</h2>
+            <div className="md:col-span-4 md:text-right">
+              <Link
+                href="/contact"
+                className="inline-block font-condensed text-[0.82rem] font-bold uppercase tracking-[0.14em] text-on-dark bg-orange-ink px-7 py-3.5 transition-colors hover:bg-[#a8380a]"
+              >
+                {c.ui.cta}
+              </Link>
+            </div>
+          </div>
+        </Shell>
+      </section>
+    </>
   );
 }

@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local dev artifacts
+shots/
+shot*.mjs
+shotm.mjs
+shotp.mjs
+*.log
